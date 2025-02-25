@@ -13,4 +13,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE Post p SET p.title = :title, p.content = :content WHERE p.id = :id")
     Post updatePost(@Param("id") Long id, @Param("title") String title, @Param("content") String content);
+
+
 }

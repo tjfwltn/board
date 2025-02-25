@@ -18,7 +18,7 @@ GET localhost:8080/posts/1
 DELETE localhost:8080/posts/1
 
 ### Post Update
-PUT localhost:8080/posts/1
+PATCH localhost:8080/posts/1
 Content-Type: application/json
 
 {

@@ -6,6 +6,8 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -19,16 +21,12 @@ public class Post {
     private Long id;
     private String title;
     private String content;
+    private Long viewCount;
 
     @DateTimeFormat(pattern = "yyyyMMddHH")
     private LocalDateTime createdAt;
 
-    public static Post of(PostRequest dto) {
-        return Post.builder()
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
 }

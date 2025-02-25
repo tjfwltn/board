@@ -1,11 +1,13 @@
 package com.example.board.service;
 
+import com.example.board.converter.PostConverter;
 import com.example.board.dto.PostRequest;
 import com.example.board.dto.PostResponse;
 import com.example.board.entity.Post;
 import com.example.board.repository.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @Transactional
@@ -18,7 +20,7 @@ public class PostService {
     }
 
     public PostResponse save(PostRequest request) {
-        Post post = postRepository.save(Post.of(request));
+        Post post = postRepository.save(PostConverter.toEntity(request));
         String message = "저장이 성공적으로 이루어짐";
 
         return PostResponse.fromPost(message, post);
@@ -39,14 +41,13 @@ public class PostService {
 
     public PostResponse modify(Long postId, PostRequest request) {
         Post post = getPostById(postId);
-        // title이 null일 경우
-        // content가 null일 경우
-        // 둘다 null일 경우
+        Post updatedPost = PostConverter.toUpdateEntity(post, request);
 
-        Post updatePost = postRepository.updatePost(postId, request.getTitle(), request.getContent());
+//        Post updatePost = postRepository.updatePost(postId, request.getTitle(), request.getContent());
+        postRepository.save(updatedPost);
         String message = "수정 완료";
 
-        return PostResponse.fromPost(message, updatePost);
+        return PostResponse.fromPost(message, updatedPost);
     }
 
     private Post getPostById(Long postId) {
