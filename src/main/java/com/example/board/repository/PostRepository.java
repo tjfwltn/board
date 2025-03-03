@@ -11,8 +11,11 @@ import org.springframework.stereotype.Repository;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query("UPDATE Post p SET p.title = :title, p.content = :content WHERE p.id = :id")
-    Post updatePost(@Param("id") Long id, @Param("title") String title, @Param("content") String content);
+    @Query("UPDATE Post p SET p.viewCount = p.viewCount + 1 WHERE p.id = :id")
+    void increaseViewCount(@Param("id") Long postId);
 
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("UPDATE Post p SET p.recommendCount = p.recommendCount + 1 WHERE p.id = :id")
+    void increaseRecommendCount(@Param("id") Long postId);
 
 }

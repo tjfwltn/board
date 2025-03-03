@@ -38,11 +38,9 @@ public class PostController {
         return postService.modify(id, request);
     }
 
-    // post에 조회 수라는 column 생성해
-    // get을 불렀을 때 하나가 올라가게
-    // 댓글 post 외래 키 댓글 외래키로 ?
-    // 추천
-    // 검색을 할 때 자동 완성 기능 ?
-    // trie - app
-    
+    @GetMapping("/posts/{id}/recommend")
+    public PostResponse recommend(@PathVariable Long id) {
+        return postService.increaseRecommendCount(id);
+    }
+
 }

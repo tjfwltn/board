@@ -1,6 +1,5 @@
 package com.example.board.entity;
 
-import com.example.board.dto.PostRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,12 +20,17 @@ public class Post {
     private Long id;
     private String title;
     private String content;
-    private Long viewCount;
+    private Long viewCount = 0L;
+    private Integer recommendCount = 0;
 
     @DateTimeFormat(pattern = "yyyyMMddHH")
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

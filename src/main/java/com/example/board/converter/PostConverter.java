@@ -16,6 +16,9 @@ public final class PostConverter {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .createdAt(LocalDateTime.now())
+                .user(dto.getUser())
+                .viewCount(0L)
+                .recommendCount(0)
                 .build();
     }
 
@@ -23,11 +26,11 @@ public final class PostConverter {
         String title = post.getTitle();
         String content = post.getContent();
 
-        if (!request.getTitle().isEmpty()) {
+        if (request.getTitle() != null) {
             title = request.getTitle();
         }
 
-        if (!request.getContent().isEmpty()) {
+        if (request.getContent() != null) {
             content = request.getContent();
         }
 
@@ -37,6 +40,8 @@ public final class PostConverter {
                 .content(content)
                 .createdAt(post.getCreatedAt())
                 .viewCount(post.getViewCount())
+                .recommendCount(post.getRecommendCount())
+                .user(post.getUser())
                 .build();
     }
 }

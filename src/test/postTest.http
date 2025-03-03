@@ -8,11 +8,15 @@ Content-Type: application/json
 
 {
   "title": "안녕 존나 졸립다",
-  "content": "아........ 시발..... 아 지수 안이랬는데 진짜 잘했는데 왜이렇게 됐을까... 진짜 개병신됐어... 학원 다닐 때만해도 잘했었는데"
+  "content": "아........ 시발..... 아 지수 안이랬는데 진짜 잘했는데 왜이렇게 됐을까... 진짜 개병신됐어... 학원 다닐 때만해도 잘했었는데",
+  "user": {
+    "id": 1,
+    "username": "tjfwltn"
+  }
 }
 
 ### 조회
-GET localhost:8080/posts/1
+GET localhost:8080/posts/2
 
 ### Post Delete
 DELETE localhost:8080/posts/1
@@ -24,3 +28,6 @@ Content-Type: application/json
 {
   "title": "수정 시작"
 }
+
+### 추천
+GET localhost:8080/posts/2/recommend

@@ -26,6 +26,7 @@ public class PostService {
         return PostResponse.fromPost(message, post);
     }
     public PostResponse getPost(Long postId) {
+        postRepository.increaseViewCount(postId);
         Post post = getPostById(postId);
 
         return PostResponse.fromPost("조회 성공", post);
@@ -52,6 +53,14 @@ public class PostService {
 
     private Post getPostById(Long postId) {
         return postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 없거나 번호가 잘못되었습니다"));
+    }
+
+    public PostResponse increaseRecommendCount(Long postId) {
+        postRepository.increaseRecommendCount(postId);
+        Post post = getPostById(postId);
+        String message = "추천 완료";
+
+        return PostResponse.fromPost(message, post);
     }
 }
