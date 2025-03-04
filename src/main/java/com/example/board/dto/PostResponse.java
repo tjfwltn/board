@@ -24,7 +24,6 @@ public class PostResponse {
         return new PostResponse(message, post.getTitle(), post.getContent(), LocalDateTime.now());
     }
 
-
     public static PostResponse delete(String message) {
         return new PostResponse(message);
     }

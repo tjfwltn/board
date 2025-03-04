@@ -38,9 +38,4 @@ public class PostController {
         return postService.modify(id, request);
     }
 
-    @GetMapping("/posts/{id}/recommend")
-    public PostResponse recommend(@PathVariable Long id) {
-        return postService.increaseRecommendCount(id);
-    }
-
 }

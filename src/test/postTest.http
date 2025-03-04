@@ -22,7 +22,7 @@ GET localhost:8080/posts/2
 DELETE localhost:8080/posts/1
 
 ### Post Update
-PATCH localhost:8080/posts/1
+PATCH localhost:8080/posts/2
 Content-Type: application/json
 
 {
@@ -30,4 +30,9 @@ Content-Type: application/json
 }
 
 ### 추천
-GET localhost:8080/posts/2/recommend
+POST localhost:8080/recommend/2
+Content-Type: application/json
+
+{
+  "userId": 1
+}
