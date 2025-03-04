@@ -16,13 +16,13 @@ Content-Type: application/json
 }
 
 ### 조회
-GET localhost:8080/posts/2
+GET localhost:8080/posts/1
 
 ### Post Delete
 DELETE localhost:8080/posts/1
 
 ### Post Update
-PATCH localhost:8080/posts/2
+PATCH localhost:8080/posts/1
 Content-Type: application/json
 
 {
@@ -30,9 +30,19 @@ Content-Type: application/json
 }
 
 ### 추천
-POST localhost:8080/recommend/2
+POST localhost:8080/recommend/1
 Content-Type: application/json
 
 {
   "userId": 1
+}
+
+### 댓글작성
+POST localhost:8080/posts/1/comments
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "parentId": 1,
+  "text": "지환아 취업하고 싶다3333"
 }

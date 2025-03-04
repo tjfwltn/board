@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -25,5 +25,5 @@ public class Recommend {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private LocalDateTime recommendDate;
+    private LocalDate recommendDate;
 }

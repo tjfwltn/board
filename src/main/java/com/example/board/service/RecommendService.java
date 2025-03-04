@@ -10,6 +10,7 @@ import com.example.board.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -32,7 +33,7 @@ public class RecommendService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         boolean alreadyRecommended = recommendRepository.existsByUserIdAndPostIdAndRecommendDate(recommendRequest.getUserId(), postId, now);
         if (alreadyRecommended) {
             return "하루에 한 번만 추천할 수 있습니다.";

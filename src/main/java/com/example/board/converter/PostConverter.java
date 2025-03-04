@@ -18,6 +18,7 @@ public final class PostConverter {
                 .createdAt(LocalDateTime.now())
                 .user(dto.getUser())
                 .viewCount(0L)
+                .recommendCount(0)
                 .build();
     }
 
@@ -40,6 +41,7 @@ public final class PostConverter {
                 .createdAt(post.getCreatedAt())
                 .viewCount(post.getViewCount())
                 .user(post.getUser())
+                .recommendCount(post.getRecommendCount())
                 .build();
     }
 }

@@ -1,7 +1,10 @@
 package com.example.board.controller;
 
+import com.example.board.dto.CommentRequest;
+import com.example.board.dto.CommentResponse;
 import com.example.board.dto.PostRequest;
 import com.example.board.dto.PostResponse;
+import com.example.board.service.CommentService;
 import com.example.board.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @Operation(summary = "게시글을 등록하는 API입니다.", description = "제목과 내용을 받아서 DB에 등록한다")
@@ -37,5 +42,16 @@ public class PostController {
     public PostResponse updatePost(@PathVariable Long id, @RequestBody PostRequest request) {
         return postService.modify(id, request);
     }
+
+    @PostMapping("/posts/{id}/comments")
+    public CommentResponse addComment(@PathVariable Long id, @RequestBody CommentRequest request) {
+        return commentService.create(id, request);
+    }
+
+//    @PostMapping("/posts/{id}/comments/{commentsId}")
+//    public CommentResponse addComment(@PathVariable Long id, @PathVariable Long commentsId, @RequestBody CommentRequest request) {
+//        return commentService.create(id, commentsId, request);
+//    }
+
 
 }
