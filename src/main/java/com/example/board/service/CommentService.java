@@ -27,14 +27,19 @@ public class CommentService {
     }
 
     public CommentResponse create(Long id, CommentRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않음"));
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 지워졌습니다."));
+        if (!userRepository.existsById(request.getUserId())) {
+            throw new IllegalArgumentException("유저가 존재하지 않음");
+        }
+        if (!postRepository.existsById(id)) {
+            throw new IllegalArgumentException("게시글이 지워졌습니다.");
+        }
+
+        User user = userRepository.getReferenceById(request.getUserId());
+        Post post = postRepository.getReferenceById(id);
 
         Comment parent = null;
         if (request.getParentId() != null) {
-            parent = commentRepository.findById(request.getParentId()).orElse(null);
+            parent = commentRepository.getReferenceById(request.getParentId());
         }
 
         Comment comment = CommentConverter.toEntity(request, user, post, parent);
@@ -43,4 +48,5 @@ public class CommentService {
         String message = "댓글 작성 완료";
         return CommentResponse.fromComment(message, comment, user);
     }
+
 }

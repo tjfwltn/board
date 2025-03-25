@@ -7,7 +7,7 @@ POST localhost:8080/signup
 Content-Type: application/json
 
 {
-  "username": "tjfwltn"
+  "username": "number3"
 }
 
 ### Post Create
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
   "title": "안녕 존나 졸립다",
-  "content": "아........ 시발..... 아 지수 안이랬는데 진짜 잘했는데 왜이렇게 됐을까... 진짜 개병신됐어... 학원 다닐 때만해도 잘했었는데",
+  "content": "내용임",
   "user": {
     "id": 1,
     "username": "tjfwltn"
@@ -34,7 +34,7 @@ PATCH localhost:8080/posts/1
 Content-Type: application/json
 
 {
-  "title": "수정 시작"
+  "title": "수정 시작222"
 }
 
 ### 추천
@@ -51,6 +51,15 @@ Content-Type: application/json
 
 {
   "userId": 1,
-  "parentId": 1,
   "text": "지환아 취업하고 싶다3333"
+}
+
+### 대댓글작성
+POST localhost:8080/posts/1/comments
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "parentId": 1,
+  "text": "취업하자"
 }

@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "Post API")
 @RestController
 public class PostController {
@@ -47,10 +49,10 @@ public class PostController {
     public CommentResponse addComment(@PathVariable Long id, @RequestBody CommentRequest request) {
         return commentService.create(id, request);
     }
-
-//    @PostMapping("/posts/{id}/comments/{commentsId}")
-//    public CommentResponse addComment(@PathVariable Long id, @PathVariable Long commentsId, @RequestBody CommentRequest request) {
-//        return commentService.create(id, commentsId, request);
+//
+//    @GetMapping("/posts/daily-best")
+//    public List<PostResponse> getDailyBestPosts() {
+//
 //    }
 
 
