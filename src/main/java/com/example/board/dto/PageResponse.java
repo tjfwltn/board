@@ -22,7 +22,7 @@ public class PageResponse {
 
     public static PageResponse from(Page<Post> postPage) {
         List<PostResponse> postResponses = postPage.getContent().stream()
-                .map(post -> PostResponse.fromPost("페이징", post))
+                .map(PostResponse::fromPostSummary)
                 .collect(Collectors.toList());
 
         return new PageResponse(

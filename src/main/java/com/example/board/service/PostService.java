@@ -12,8 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 
 @Service
 @Transactional
@@ -62,8 +60,8 @@ public class PostService {
 
     public PageResponse getPostList(int page, int size) {
         PageRequest createdAt = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<Post> postPage = postRepository.findAll(createdAt);
+        Page<Post> posts = postRepository.findAll(createdAt);
 
-        return PageResponse.from(postPage);
+        return PageResponse.from(posts);
     }
 }

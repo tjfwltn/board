@@ -32,8 +32,9 @@ public class PostController {
         return postService.getPost(id);
     }
 
-    @GetMapping("/posts/lists/{page}")
-    public PageResponse getPostList(@PathVariable int page,
+    @Operation(summary = "게시글 페이징 API", description = "인자로 페이지를 받아 최신순으로 20개씩 가져온다")
+    @GetMapping("/posts/lists")
+    public PageResponse getPostList(@RequestParam(defaultValue = "0") int page,
                                     @RequestParam(defaultValue = "20") int size) {
         return postService.getPostList(page, size);
     }

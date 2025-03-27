@@ -1,6 +1,5 @@
 package com.example.board.dto;
 
-import com.example.board.entity.Comment;
 import com.example.board.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,12 +23,26 @@ public class PostResponse {
         this.message = message;
     }
 
+    public PostResponse(String title, LocalDateTime createdAt, String username) {
+        this.title = title;
+        this.createdAt = createdAt;
+        this.username = username;
+    }
+
     public static PostResponse fromPost(String message, Post post) {
         List<CommentResponse> commentResponses = post.getComments().stream()
                 .filter(comment -> comment.getParent() == null)
                 .map(comment -> CommentResponse.fromComment(comment, comment.getUser()))
                 .toList();
         return new PostResponse(message, post.getTitle(), post.getContent(), post.getCreatedAt(), post.getUser().getUsername(), commentResponses);
+    }
+
+    public static PostResponse fromPostSummary(Post post) {
+        return new PostResponse(
+                post.getTitle(),
+                post.getCreatedAt(),
+                post.getUser().getUsername()
+        );
     }
 
     public static PostResponse delete(String message) {
