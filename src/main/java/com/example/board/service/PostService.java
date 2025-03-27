@@ -1,12 +1,18 @@
 package com.example.board.service;
 
 import com.example.board.converter.PostConverter;
+import com.example.board.dto.PageResponse;
 import com.example.board.dto.PostRequest;
 import com.example.board.dto.PostResponse;
 import com.example.board.entity.Post;
 import com.example.board.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -28,7 +34,6 @@ public class PostService {
     public PostResponse getPost(Long postId) {
         postRepository.increaseViewCount(postId);
         Post post = getPostById(postId);
-
         return PostResponse.fromPost("조회 성공", post);
     }
 
@@ -44,7 +49,6 @@ public class PostService {
         Post post = getPostById(postId);
         Post updatedPost = PostConverter.toUpdateEntity(post, request);
 
-//        Post updatePost = postRepository.updatePost(postId, request.getTitle(), request.getContent());
         postRepository.save(updatedPost);
         String message = "수정 완료";
 
@@ -56,4 +60,10 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 없거나 번호가 잘못되었습니다"));
     }
 
+    public PageResponse getPostList(int page, int size) {
+        PageRequest createdAt = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Post> postPage = postRepository.findAll(createdAt);
+
+        return PageResponse.from(postPage);
+    }
 }

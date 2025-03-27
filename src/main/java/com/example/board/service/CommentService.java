@@ -45,8 +45,7 @@ public class CommentService {
         Comment comment = CommentConverter.toEntity(request, user, post, parent);
         commentRepository.save(comment);
 
-        String message = "댓글 작성 완료";
-        return CommentResponse.fromComment(message, comment, user);
+        return CommentResponse.fromComment(comment, user);
     }
 
 }

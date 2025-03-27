@@ -1,16 +1,13 @@
 package com.example.board.controller;
 
-import com.example.board.dto.CommentRequest;
-import com.example.board.dto.CommentResponse;
-import com.example.board.dto.PostRequest;
-import com.example.board.dto.PostResponse;
+import com.example.board.dto.*;
+import com.example.board.entity.Post;
 import com.example.board.service.CommentService;
 import com.example.board.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "Post API")
 @RestController
@@ -35,6 +32,12 @@ public class PostController {
         return postService.getPost(id);
     }
 
+    @GetMapping("/posts/lists/{page}")
+    public PageResponse getPostList(@PathVariable int page,
+                                    @RequestParam(defaultValue = "20") int size) {
+        return postService.getPostList(page, size);
+    }
+
     @DeleteMapping("/posts/{id}")
     public PostResponse deletePost(@PathVariable Long id) {
         return postService.deleteById(id);
@@ -49,6 +52,7 @@ public class PostController {
     public CommentResponse addComment(@PathVariable Long id, @RequestBody CommentRequest request) {
         return commentService.create(id, request);
     }
+
 //
 //    @GetMapping("/posts/daily-best")
 //    public List<PostResponse> getDailyBestPosts() {

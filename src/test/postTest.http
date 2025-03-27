@@ -23,8 +23,11 @@ Content-Type: application/json
   }
 }
 
-### 조회
+### 한 게시글 조회
 GET localhost:8080/posts/1
+
+### 페이지 조회
+GET localhost:8080/posts/lists/1
 
 ### Post Delete
 DELETE localhost:8080/posts/1
@@ -51,7 +54,8 @@ Content-Type: application/json
 
 {
   "userId": 1,
-  "text": "지환아 취업하고 싶다3333"
+  "parentId": 7,
+  "text": "대댓글확인"
 }
 
 ### 대댓글작성
