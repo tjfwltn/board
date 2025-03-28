@@ -27,7 +27,7 @@ Content-Type: application/json
 GET localhost:8080/posts/1
 
 ### 페이지 조회
-GET localhost:8080/posts/lists?page=1&size=30
+GET localhost:8080/posts/lists?page=2
 
 ### Post Delete
 DELETE localhost:8080/posts/1
@@ -53,9 +53,9 @@ POST localhost:8080/posts/1/comments
 Content-Type: application/json
 
 {
-  "userId": 1,
+  "userId": 3,
   "parentId": 7,
-  "text": "대댓글확인"
+  "text": "대댓글확인3"
 }
 
 ### 대댓글작성

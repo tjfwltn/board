@@ -60,7 +60,7 @@ public class PostService {
 
     public PageResponse getPostList(int page, int size) {
         PageRequest createdAt = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<Post> posts = postRepository.findAll(createdAt);
+        Page<Post> posts = postRepository.findAllPostsWithUser(createdAt);
 
         return PageResponse.from(posts);
     }
