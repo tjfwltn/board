@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -34,10 +35,20 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Comment parent;
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Long parentId;
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Transient
     private List<Comment> replies = new ArrayList<>();
+
+    public void addReplies(List<Comment> childComments) {
+        this.replies = childComments;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.parentId == null)
+            this.parentId = 0L;
+    }
 }

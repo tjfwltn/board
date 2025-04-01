@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -26,5 +28,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p from Post p JOIN FETCH p.user ORDER BY p.createdAt DESC")
     Page<Post> findAllPostsWithUser(Pageable pageable);
+
+    @Query("SELECT p FROM Post p JOIN FETCH p.user WHERE p.id = :postId")
+    Optional<Post> findByIdWithUser(@Param("postId") Long postId);
 
 }

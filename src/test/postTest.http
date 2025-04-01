@@ -7,7 +7,7 @@ POST localhost:8080/signup
 Content-Type: application/json
 
 {
-  "username": "number3"
+  "username": "test5"
 }
 
 ### Post Create
@@ -15,19 +15,19 @@ POST http://localhost:8080/posts
 Content-Type: application/json
 
 {
-  "title": "안녕 존나 졸립다",
-  "content": "내용임",
+  "title": "안녕 존나 졸립다22",
+  "content": "내용임22",
   "user": {
-    "id": 1,
-    "username": "tjfwltn"
+    "id": 2,
+    "username": "test2"
   }
 }
 
 ### 한 게시글 조회
-GET localhost:8080/posts/1
+GET localhost:8080/posts/2
 
 ### 페이지 조회
-GET localhost:8080/posts/lists?page=2
+GET localhost:8080/posts/lists?page=
 
 ### Post Delete
 DELETE localhost:8080/posts/1
@@ -49,13 +49,13 @@ Content-Type: application/json
 }
 
 ### 댓글작성
-POST localhost:8080/posts/1/comments
+POST localhost:8080/posts/2/comments
 Content-Type: application/json
 
 {
   "userId": 3,
-  "parentId": 7,
-  "text": "대댓글확인3"
+  "parentId": 1,
+  "text": "첫번째 댓글의 세번째 답글임"
 }
 
 ### 대댓글작성
@@ -67,3 +67,12 @@ Content-Type: application/json
   "parentId": 1,
   "text": "취업하자"
 }
+
+### 댓글 정렬 기본순
+GET localhost:8080/posts/2/comments
+
+#### 댓글 정렬 최신순
+#GET localhost:8080/posts/2/comments?sort=latest
+#
+#### 댓글 정렬 답글순
+#GET localhost:8080/posts/2/comments?sort=replies

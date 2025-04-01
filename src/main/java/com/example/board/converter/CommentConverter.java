@@ -15,14 +15,14 @@ public final class CommentConverter {
     }
 
 
-    public static Comment toEntity(CommentRequest request, User user, Post post, Comment parent) {
+    public static Comment toEntity(CommentRequest request, User user, Post post) {
         if (request.getParentId() != null) {
             return Comment.builder()
                     .text(request.getText())
                     .createdAt(LocalDateTime.now())
                     .user(user)
                     .post(post)
-                    .parent(parent)
+                    .parentId(request.getParentId())
                     .build();
         }
 

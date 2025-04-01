@@ -4,7 +4,9 @@ import com.example.board.converter.PostConverter;
 import com.example.board.dto.PageResponse;
 import com.example.board.dto.PostRequest;
 import com.example.board.dto.PostResponse;
+import com.example.board.entity.Comment;
 import com.example.board.entity.Post;
+import com.example.board.repository.CommentRepository;
 import com.example.board.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,27 +14,36 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @Transactional
 public class PostService {
 
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
     }
 
     public PostResponse save(PostRequest request) {
         Post post = postRepository.save(PostConverter.toEntity(request));
-        String message = "저장이 성공적으로 이루어짐";
 
-        return PostResponse.fromPost(message, post);
+        return PostResponse.fromPostSummary(post);
     }
     public PostResponse getPost(Long postId) {
-        postRepository.increaseViewCount(postId);
         Post post = getPostById(postId);
-        return PostResponse.fromPost("조회 성공", post);
+        postRepository.increaseViewCount(postId);
+
+        List<Comment> parentComments = commentRepository.findParentCommentsByPostId(postId);
+        for (Comment parentComment : parentComments) {
+            List<Comment> childComments = commentRepository.findChildCommentsByParentId(parentComment.getId());
+            parentComment.addReplies(childComments);
+        }
+        return PostResponse.fromPost("조회 성공", post, parentComments);
     }
 
     public PostResponse deleteById(Long postId) {
@@ -48,13 +59,11 @@ public class PostService {
         Post updatedPost = PostConverter.toUpdateEntity(post, request);
 
         postRepository.save(updatedPost);
-        String message = "수정 완료";
-
-        return PostResponse.fromPost(message, updatedPost);
+        return PostResponse.fromPostSummary(updatedPost);
     }
 
     private Post getPostById(Long postId) {
-        return postRepository.findById(postId)
+        return postRepository.findByIdWithUser(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 없거나 번호가 잘못되었습니다"));
     }
 
