@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -21,9 +23,12 @@ public class CommentResponse {
     private List<CommentResponse> replies;
 
     public static CommentResponse fromComment(Comment comment, User user) {
-        List<CommentResponse> replies = comment.getReplies().stream()
+        List<CommentResponse> replies = Optional.ofNullable(comment.getReplies())
+                .orElse(Collections.emptyList())
+                .stream()
                 .map(reply -> CommentResponse.fromComment(reply, reply.getUser()))
                 .collect(Collectors.toList());
+
         return new CommentResponse(comment.getText(), user.getUsername(), comment.getCreatedAt(), replies);
     }
 }

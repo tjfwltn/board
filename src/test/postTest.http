@@ -15,8 +15,8 @@ POST http://localhost:8080/posts
 Content-Type: application/json
 
 {
-  "title": "안녕 존나 졸립다22",
-  "content": "내용임22",
+  "title": "안녕 존나 졸립다2",
+  "content": "내용임2",
   "user": {
     "id": 2,
     "username": "test2"
@@ -53,9 +53,9 @@ POST localhost:8080/posts/2/comments
 Content-Type: application/json
 
 {
-  "userId": 3,
+  "userId": 4,
   "parentId": 1,
-  "text": "첫번째 댓글의 세번째 답글임"
+  "text": "첫번째 댓글에 대한 네번째 댓글"
 }
 
 ### 대댓글작성

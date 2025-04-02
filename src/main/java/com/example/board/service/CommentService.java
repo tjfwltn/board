@@ -49,8 +49,13 @@ public class CommentService {
         User user = userRepository.getReferenceById(request.getUserId());
         Post post = postRepository.getReferenceById(id);
 
+        Comment parent = null;
 
-        Comment comment = CommentConverter.toEntity(request, user, post);
+        if (request.getParentId() != null) {
+            parent = commentRepository.findById(request.getParentId()).get();
+        }
+
+        Comment comment = CommentConverter.toEntity(request, user, post, parent);
         commentRepository.save(comment);
 
         return CommentResponse.fromComment(comment, user);
@@ -61,7 +66,7 @@ public class CommentService {
 
         for (Comment comment : parentComments) {
             List<Comment> childCommentsByParentId = commentRepository.findChildCommentsByParentId(comment.getId());
-            comment.addReplies(childCommentsByParentId);
+            comment.getReplies().addAll(childCommentsByParentId);
         }
 
         return parentComments.stream()

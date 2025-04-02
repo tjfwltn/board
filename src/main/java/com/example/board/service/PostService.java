@@ -41,7 +41,7 @@ public class PostService {
         List<Comment> parentComments = commentRepository.findParentCommentsByPostId(postId);
         for (Comment parentComment : parentComments) {
             List<Comment> childComments = commentRepository.findChildCommentsByParentId(parentComment.getId());
-            parentComment.addReplies(childComments);
+            parentComment.getReplies().addAll(childComments);
         }
         return PostResponse.fromPost("조회 성공", post, parentComments);
     }

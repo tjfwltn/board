@@ -35,20 +35,11 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    private Long parentId;
+    @JoinColumn(name = "parent_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Comment parent;
 
-    @Transient
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Comment> replies = new ArrayList<>();
 
-    public void addReplies(List<Comment> childComments) {
-        this.replies = childComments;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (this.parentId == null)
-            this.parentId = 0L;
-    }
 }

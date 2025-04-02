@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("SELECT c FROM Comment c WHERE c.parentId IS NULL AND c.post.id = :postId")
+    @Query("SELECT c FROM Comment c WHERE c.parent.id IS NULL AND c.post.id = :postId")
     List<Comment> findParentCommentsByPostId(@Param("postId") Long postId);
 
-    @Query("SELECT c FROM Comment c WHERE c.parentId = :parentId")
+    @Query("SELECT c FROM Comment c WHERE c.parent.id = :parentId")
     List<Comment> findChildCommentsByParentId(@Param("parentId") Long parentId);
 
 //    @Query(value = """
