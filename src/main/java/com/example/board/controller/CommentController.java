@@ -19,9 +19,10 @@ public class CommentController {
 
     @GetMapping("/posts/{postId}/comments")
     public ResponseEntity<List<CommentResponse>> getComments(
-            @PathVariable Long postId
+            @PathVariable Long postId,
+            @RequestParam(defaultValue = "createdAt") String sort
             ) {
-        List<CommentResponse> commentResponses = commentService.getComments(postId);
+        List<CommentResponse> commentResponses = commentService.getComments(postId, sort);
         return ResponseEntity.ok(commentResponses);
     }
 }

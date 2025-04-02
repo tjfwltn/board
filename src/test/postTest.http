@@ -55,7 +55,7 @@ Content-Type: application/json
 {
   "userId": 4,
   "parentId": 1,
-  "text": "첫번째 댓글에 대한 네번째 댓글"
+  "text": "첫번째 댓글에 대한 여덟번째 댓글"
 }
 
 ### 대댓글작성
@@ -71,8 +71,8 @@ Content-Type: application/json
 ### 댓글 정렬 기본순
 GET localhost:8080/posts/2/comments
 
-#### 댓글 정렬 최신순
-#GET localhost:8080/posts/2/comments?sort=latest
-#
-#### 댓글 정렬 답글순
-#GET localhost:8080/posts/2/comments?sort=replies
+### 댓글 정렬 최신순
+GET localhost:8080/posts/2/comments?sort=latest
+
+### 댓글 정렬 답글순
+GET localhost:8080/posts/2/comments?sort=replies

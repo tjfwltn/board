@@ -31,4 +31,8 @@ public class CommentResponse {
 
         return new CommentResponse(comment.getText(), user.getUsername(), comment.getCreatedAt(), replies);
     }
+
+    public int getRepliesSize() {
+        return this.replies.size();
+    }
 }

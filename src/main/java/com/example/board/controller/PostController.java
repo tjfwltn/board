@@ -28,8 +28,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public PostResponse getPost(@PathVariable Long id) {
-        return postService.getPost(id);
+    public PostResponse getPost(@PathVariable Long id,
+                                @RequestParam(defaultValue = "createdAt") String sortType) {
+        return postService.getPost(id, sortType);
     }
 
     @Operation(summary = "게시글 페이징 API", description = "인자로 페이지를 받아 최신순으로 20개씩 가져온다")

@@ -1,6 +1,7 @@
 package com.example.board.converter;
 
 
+import com.example.board.constants.SortType;
 import com.example.board.dto.CommentRequest;
 import com.example.board.dto.CommentResponse;
 import com.example.board.entity.Comment;
@@ -8,12 +9,11 @@ import com.example.board.entity.Post;
 import com.example.board.entity.User;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class CommentConverter {
+
+    private static final List<String> SORT_TYPES = List.of("createdAt", "latest", "replies");
 
     private CommentConverter() {
         throw new AssertionError("utility class");
@@ -39,7 +39,7 @@ public final class CommentConverter {
                 .build();
     }
 
-    public static List<CommentResponse> buildCommentHierarchy(List<Comment> comments) {
+    public static List<CommentResponse> buildCommentHierarchy(List<Comment> comments, String sortType) {
         Map<Long, CommentResponse> commentMap = new HashMap<>();
         List<CommentResponse> rootComments = new ArrayList<>();
 
@@ -53,9 +53,23 @@ public final class CommentConverter {
                 rootComments.add(current);
             }
         }
+        Comparator<CommentResponse> comparator = getComparator(sortType);
 
-        return rootComments;
+        System.out.println("sortType = " + sortType);
+        System.out.println("comparator = " + comparator);
+        return rootComments.stream()
+                .sorted(comparator).toList();
 
     }
 
+    public static Comparator<CommentResponse> getComparator(String sortType) {
+        SortType type = SortType.fromString(sortType);
+        System.out.println("Comparator 사용 : " + type);
+        return switch (type) {
+            case CREATED_AT -> Comparator.comparing(CommentResponse::getCreatedAt);
+            case LATEST -> Comparator.comparing(CommentResponse::getCreatedAt).reversed();
+            case MOST_REPLIES -> Comparator.comparingInt(CommentResponse::getRepliesSize)
+                    .reversed();
+        };
+    }
 }

@@ -36,12 +36,12 @@ public class PostService {
 
         return PostResponse.fromPostSummary(post);
     }
-    public PostResponse getPost(Long postId) {
+    public PostResponse getPost(Long postId, String sortType) {
         Post post = getPostById(postId);
         postRepository.increaseViewCount(postId);
 
         List<Comment> comments = commentRepository.findAllCommentsByPostIdWithReplies(postId);
-        List<CommentResponse> commentResponses = CommentConverter.buildCommentHierarchy(comments);
+        List<CommentResponse> commentResponses = CommentConverter.buildCommentHierarchy(comments, sortType);
 
         return PostResponse.fromPost("조회 성공", post, commentResponses);
     }

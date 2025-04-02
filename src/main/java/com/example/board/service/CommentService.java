@@ -13,22 +13,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.example.board.converter.CommentConverter.buildCommentHierarchy;
 
 @Service
 @Transactional
 public class CommentService {
-
-    private static final Map<String, Sort> SORT_MAP = Map.of(
-            "latest", Sort.by(Sort.Direction.DESC, "createAt"),
-            "replies", Sort.by(Sort.Direction.DESC, "parentId", "createdAt")
-    );
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
@@ -63,23 +55,9 @@ public class CommentService {
         return CommentResponse.fromComment(comment, user);
     }
 
-    public List<CommentResponse> getComments(Long postId) {
+    public List<CommentResponse> getComments(Long postId, String sortType) {
         List<Comment> comments = commentRepository.findAllCommentsByPostIdWithReplies(postId);
-        return buildCommentHierarchy(comments);
-//        List<Comment> parentComments = commentRepository.findParentCommentsByPostId(postId);
-//
-//        for (Comment comment : parentComments) {
-//            List<Comment> childCommentsByParentId = commentRepository.findChildCommentsByParentId(comment.getId());
-//            comment.getReplies().addAll(childCommentsByParentId);
-//        }
-//
-//        return parentComments.stream()
-//                .map(comment -> CommentResponse.fromComment(comment, comment.getUser()))
-//                .toList();
+        return buildCommentHierarchy(comments, sortType);
     }
 
-
-    private Sort getSortType(String sort) {
-        return SORT_MAP.getOrDefault(sort, Sort.by(Sort.Direction.ASC, "createdAt"));
-    }
 }
