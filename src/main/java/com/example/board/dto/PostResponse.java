@@ -30,11 +30,7 @@ public class PostResponse {
         this.username = username;
     }
 
-    public static PostResponse fromPost(String message, Post post, List<Comment> comments) {
-        List<CommentResponse> commentResponses = comments.stream()
-                .map(comment -> CommentResponse.fromComment(comment, comment.getUser()))
-                .toList();
-
+    public static PostResponse fromPost(String message, Post post, List<CommentResponse> commentResponses) {
         return new PostResponse(message, post.getTitle(), post.getContent(), post.getCreatedAt(), post.getUser().getUsername(), commentResponses);
     }
 

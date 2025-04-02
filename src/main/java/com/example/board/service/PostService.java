@@ -1,6 +1,8 @@
 package com.example.board.service;
 
+import com.example.board.converter.CommentConverter;
 import com.example.board.converter.PostConverter;
+import com.example.board.dto.CommentResponse;
 import com.example.board.dto.PageResponse;
 import com.example.board.dto.PostRequest;
 import com.example.board.dto.PostResponse;
@@ -38,12 +40,10 @@ public class PostService {
         Post post = getPostById(postId);
         postRepository.increaseViewCount(postId);
 
-        List<Comment> parentComments = commentRepository.findParentCommentsByPostId(postId);
-        for (Comment parentComment : parentComments) {
-            List<Comment> childComments = commentRepository.findChildCommentsByParentId(parentComment.getId());
-            parentComment.getReplies().addAll(childComments);
-        }
-        return PostResponse.fromPost("조회 성공", post, parentComments);
+        List<Comment> comments = commentRepository.findAllCommentsByPostIdWithReplies(postId);
+        List<CommentResponse> commentResponses = CommentConverter.buildCommentHierarchy(comments);
+
+        return PostResponse.fromPost("조회 성공", post, commentResponses);
     }
 
     public PostResponse deleteById(Long postId) {

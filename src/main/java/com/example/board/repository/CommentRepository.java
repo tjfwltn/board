@@ -1,7 +1,6 @@
 package com.example.board.repository;
 
 import com.example.board.entity.Comment;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,11 +11,8 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("SELECT c FROM Comment c WHERE c.parent.id IS NULL AND c.post.id = :postId")
-    List<Comment> findParentCommentsByPostId(@Param("postId") Long postId);
-
-    @Query("SELECT c FROM Comment c WHERE c.parent.id = :parentId")
-    List<Comment> findChildCommentsByParentId(@Param("parentId") Long parentId);
+    @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.user LEFT JOIN FETCH c.replies WHERE c.post.id = :postId")
+    List<Comment> findAllCommentsByPostIdWithReplies(@Param("postId") Long postId);
 
 //    @Query(value = """
 //        WITH RECURSIVE CommentTree AS (
