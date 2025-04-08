@@ -1,7 +1,7 @@
 package com.example.board.service;
 
-import com.example.board.converter.CommentConverter;
-import com.example.board.converter.PostConverter;
+import com.example.board.util.CommentConverter;
+import com.example.board.util.PostConverter;
 import com.example.board.dto.CommentResponse;
 import com.example.board.dto.PageResponse;
 import com.example.board.dto.PostRequest;
@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -36,12 +38,17 @@ public class PostService {
 
         return PostResponse.fromPostSummary(post);
     }
-    public PostResponse getPost(Long postId, String sortType) {
+
+    public PostResponse getPost(Long postId, String sortType, int commentPage, int commentPageSize) {
         Post post = getPostById(postId);
         postRepository.increaseViewCount(postId);
+        List<Comment> allCommentsWithReplies = commentRepository.findAllCommentsWithReplies(postId);
+        List<CommentResponse> commentHierarchy = CommentConverter.buildCommentHierarchy(allCommentsWithReplies, sortType);
 
-        List<Comment> comments = commentRepository.findAllCommentsByPostIdWithReplies(postId);
-        List<CommentResponse> commentResponses = CommentConverter.buildCommentHierarchy(comments, sortType);
+        int fromIndex = commentPage * commentPageSize;
+        int toIndex = Math.min(fromIndex + commentPageSize, commentHierarchy.size());
+
+        List<CommentResponse> commentResponses = commentHierarchy.subList(fromIndex, toIndex);
 
         return PostResponse.fromPost("조회 성공", post, commentResponses);
     }

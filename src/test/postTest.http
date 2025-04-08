@@ -54,8 +54,7 @@ Content-Type: application/json
 
 {
   "userId": 4,
-  "parentId": 1,
-  "text": "첫번째 댓글에 대한 여덟번째 댓글"
+  "text": "세번째 댓글인 아홉번째 댓글"
 }
 
 ### 대댓글작성

@@ -11,9 +11,17 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.user LEFT JOIN FETCH c.replies WHERE c.post.id = :postId")
-    List<Comment> findAllCommentsByPostIdWithReplies(@Param("postId") Long postId);
+    @Query("""
+    SELECT DISTINCT c
+    FROM Comment c
+    LEFT JOIN FETCH c.user
+    LEFT JOIN FETCH c.replies r
+    LEFT JOIN FETCH r.user
+    WHERE c.post.id = :postId
+""")
+    List<Comment> findAllCommentsWithReplies(@Param("postId") Long postId);
 
+    // 재귀 쿼리
 //    @Query(value = """
 //        WITH RECURSIVE CommentTree AS (
 //            -- 최상위 댓글 조회 (부모 댓글)

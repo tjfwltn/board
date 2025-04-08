@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
-    private final CommentService commentService;
 
-    public PostController(PostService postService, CommentService commentService) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.commentService = commentService;
     }
 
     @Operation(summary = "게시글을 등록하는 API입니다.", description = "제목과 내용을 받아서 DB에 등록한다")
@@ -29,8 +27,10 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public PostResponse getPost(@PathVariable Long id,
-                                @RequestParam(defaultValue = "createdAt") String sortType) {
-        return postService.getPost(id, sortType);
+                                @RequestParam(defaultValue = "createdAt") String sortType,
+                                @RequestParam(defaultValue = "0") int commentPage,
+                                @RequestParam(defaultValue = "50") int commentPageSize) {
+        return postService.getPost(id, sortType, commentPage, commentPageSize);
     }
 
     @Operation(summary = "게시글 페이징 API", description = "인자로 페이지를 받아 최신순으로 20개씩 가져온다")
@@ -48,11 +48,6 @@ public class PostController {
     @PatchMapping("/posts/{id}")
     public PostResponse updatePost(@PathVariable Long id, @RequestBody PostRequest request) {
         return postService.modify(id, request);
-    }
-
-    @PostMapping("/posts/{id}/comments")
-    public CommentResponse addComment(@PathVariable Long id, @RequestBody CommentRequest request) {
-        return commentService.create(id, request);
     }
 
 //

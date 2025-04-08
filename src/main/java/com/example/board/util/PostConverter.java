@@ -1,4 +1,4 @@
-package com.example.board.converter;
+package com.example.board.util;
 
 import com.example.board.dto.PostRequest;
 import com.example.board.entity.Post;

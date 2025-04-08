@@ -5,6 +5,7 @@ import com.example.board.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentResponse {
@@ -35,4 +37,5 @@ public class CommentResponse {
     public int getRepliesSize() {
         return this.replies.size();
     }
+
 }
